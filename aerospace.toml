@@ -186,6 +186,13 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+# [workspace-to-monitor-force-assignment]
+# 0 = 'main'
+# 1 = 'secondary'
+# 2 = 'main'
+# 3 = 'main'
+# 4 = 'secondary'
+
 # find app id with => osascript -e 'id of app "Firefox"'
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
