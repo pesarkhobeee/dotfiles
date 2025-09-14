@@ -1,0 +1,72 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+      "cmd g g": [
+        "task::Spawn",
+        { "task_name": "start lazygit", "reveal_target": "center" }
+      ],
+      "cmd g f": [
+        "task::Spawn",
+        { "task_name": "start lazygit file log", "reveal_target": "center" }
+      ],
+      "cmd g h": [
+        "task::Spawn",
+        {
+          "task_name": "pr"
+        }
+      ],
+      "cmd p t": "terminal_panel::ToggleFocus",
+      "cmd p a": "agent::ToggleFocus",
+      "cmd p p": "project_panel::ToggleFocus",
+      "cmd p g": "git_panel::ToggleFocus",
+      "cmd f f": "file_finder::Toggle",
+      "cmd f r": "pane::DeploySearch",
+      "cmd z z": "workspace::ToggleZoom",
+      "cmd left": "workspace::ActivatePaneLeft",
+      "cmd right": "workspace::ActivatePaneRight",
+      "cmd up": "workspace::ActivatePaneUp",
+      "cmd down": "workspace::ActivatePaneDown",
+      "cmd s f": "workspace::SaveWithoutFormat"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore"
+    }
+  },
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "cmd g g": [
+        "task::Spawn",
+        { "task_name": "start lazygit", "reveal_target": "center" }
+      ],
+      "cmd g f": [
+        "task::Spawn",
+        { "task_name": "start lazygit file log", "reveal_target": "center" }
+      ],
+      "cmd p t": "terminal_panel::ToggleFocus",
+      "cmd p a": "agent::ToggleFocus",
+      "cmd p p": "project_panel::ToggleFocus",
+      "cmd p g": "git_panel::ToggleFocus",
+      "cmd f f": "file_finder::Toggle",
+      "cmd f r": "pane::DeploySearch",
+      "cmd z z": "workspace::ToggleZoom",
+      "cmd left": "workspace::ActivatePaneLeft",
+      "cmd right": "workspace::ActivatePaneRight",
+      "cmd up": "workspace::ActivatePaneUp",
+      "cmd down": "workspace::ActivatePaneDown",
+      "cmd s f": "workspace::SaveWithoutFormat"
+    }
+  }
+]
