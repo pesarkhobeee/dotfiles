@@ -63,7 +63,7 @@ inner.horizontal = 10
 inner.vertical =   10
 outer.left =       10
 outer.bottom =     10
-outer.top =        10
+outer.top =        [{ monitor.main = 44 }, 14]
 outer.right =      10
 
 # 'main' binding mode declaration
@@ -88,7 +88,7 @@ outer.right =      10
 
 # You can uncomment this line to open up terminal with alt + enter shortcut
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-# alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
+alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app --args -n -t Launcher -e bash'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-slash = 'layout tiles horizontal vertical'
@@ -216,3 +216,10 @@ run = "move-node-to-workspace 8"
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
 run = "move-node-to-workspace 9"
+
+[[on-window-detected]]
+if.app-id = "com.apple.Terminal"
+run = "layout floating"
+
+
+
