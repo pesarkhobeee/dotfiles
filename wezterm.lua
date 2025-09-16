@@ -6,6 +6,7 @@ return {
   initial_rows = 30,
   color_scheme = "Mirage",
   tab_bar_at_bottom = true,
+  window_decorations = "RESIZE",
   use_cap_height_to_scale_fallback_fonts = true,
   adjust_window_size_when_changing_font_size = false,
   custom_block_glyphs = true,
