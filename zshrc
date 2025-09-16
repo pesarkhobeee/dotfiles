@@ -177,4 +177,8 @@ eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 eval "$(task --completion zsh)"
 
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules,target --preview 'bat -n --color=always {}'"
+
 source /Users/farid/wezterm.sh
