@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # =============================================================================
-# kget.sh - Interactive Kubernetes Resource Explorer
+# my-k-explain.sh - Interactive Kubernetes Resource Explorer
 # =============================================================================
 #
 # This script provides an interactive way to explore Kubernetes resources using
 # fzf for selection and bat for formatted output.
 #
 # Usage:
-#   ./kget.sh           - Browse and describe Kubernetes resources interactively
-#   ./kget.sh [arg]     - Explain a selected resource type instead of describing instances
+#   ./my-k-explain.sh           - Browse and describe Kubernetes resources interactively
+#   ./my-k-explain.sh [arg]     - Explain a selected resource type instead of describing instances
 #
 # Features:
 # - Lists all available Kubernetes resources using kubectl api-resources

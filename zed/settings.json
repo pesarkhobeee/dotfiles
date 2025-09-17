@@ -27,5 +27,8 @@
     "border_size": 0.0,
     // Opacity of the inactive panes. 0 means transparent, 1 means opaque.
     "inactive_opacity": 0.8
+  },
+  "title_bar": {
+    "show": false
   }
 }

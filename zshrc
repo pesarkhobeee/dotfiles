@@ -130,9 +130,6 @@ alias ccat=bat
 export PATH=$PATH:/Users/farid/bin
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
-# eval $(thefuck --alias)
-eval "$(atuin init zsh)"
-
 # Make `Ctrl + W` and `Ctrl + Alt + H` in zsh behave the same as in bash
 # Start of it
 # Create a new widget.
@@ -157,21 +154,17 @@ bindkey   '^W' backward-kill-space-word
 bindkey '^[^H' backward-kill-bash-word
 # End of it
 
+# eval $(thefuck --alias)
+eval "$(atuin init zsh)"
 export PATH="/Users/farid/.local/bin:$PATH"
 export PATH="/Users/farid/.config/my-bash-scripts:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
+export PATH="/opt/homebrew/opt/ruby/bin:/Users/farid/.gem/bin:$PATH"
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+export GEM_HOME="$HOME/.gem"
 export GOPRIVATE=github.com/goflink/*
 export GONOSUMDB=github.com/goflink/*
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/farid/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/farid/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/farid/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/farid/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-export PATH="/opt/homebrew/opt/ruby/bin:/Users/farid/.gem/bin:$PATH"
-export GEM_HOME="$HOME/.gem"
-export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
@@ -181,4 +174,4 @@ eval "$(task --completion zsh)"
 source <(fzf --zsh)
 export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules,target --preview 'bat -n --color=always {}'"
 
-source /Users/farid/wezterm.sh
+source /Users/farid/.config/my-bash-scripts/wezterm.sh
