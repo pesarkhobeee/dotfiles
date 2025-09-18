@@ -4,7 +4,10 @@ if [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#todo" ]; then
   aerospace focus --window-id 11046 && wezterm cli activate-pane --pane-id=0
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#mute-toggle" ] ; then
   aerospace volume mute-toggle
-else
+elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#github" ] ; then
+  # gh repo list goflink --limit 1000 > github-links.txt
+  cat /Users/farid/github-links.txt | choose | awk '{print "https://github.com/"$1}' | xargs open
+elif [ "$SELECTED_LINK" != "" ] ; then
   open "$SELECTED_LINK"
 fi
 # TODO
