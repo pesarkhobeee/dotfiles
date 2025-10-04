@@ -113,6 +113,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'github/copilot.vim'
+Plug 'liuchengxu/vim-which-key'
 
 " Initialize plugin system
 call plug#end()
@@ -250,3 +251,109 @@ map <silent><Leader>g :call setbufvar(winbufnr(popup_atcursor(systemlist("cd " .
 " set spelllang=en
 " set spell
 set nospell
+
+" vim-which-key
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+let g:which_key_map = {}
+
+" File-related bindings
+let g:which_key_map.f = {
+      \ 'name' : '+file',
+      \ 'f' : [':Files', 'find files'],
+      \ 'r' : [':Rg', 'ripgrep text'],
+      \ 'e' : [':edit ~/.vimrc', 'edit vimrc'],
+      \ }
+
+" Buffer-related bindings
+let g:which_key_map.b = {
+      \ 'name' : '+buffer',
+      \ 'n' : [':bnext', 'next buffer'],
+      \ 'p' : [':bprevious', 'previous buffer'],
+      \ 'd' : [':bd', 'delete buffer'],
+      \ }
+
+" Window/split bindings
+let g:which_key_map['w'] = {
+      \ 'name' : '+windows' ,
+      \ 'w' : ['<C-W>w'     , 'other-window']          ,
+      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
+      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
+      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
+      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
+      \ 'h' : ['<C-W>h'     , 'window-left']           ,
+      \ 'j' : ['<C-W>j'     , 'window-below']          ,
+      \ 'l' : ['<C-W>l'     , 'window-right']          ,
+      \ 'k' : ['<C-W>k'     , 'window-up']             ,
+      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
+      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
+      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
+      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
+      \ '=' : ['<C-W>='     , 'balance-window']        ,
+      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
+      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
+      \ '?' : ['Windows'    , 'fzf-window']            ,
+      \ }
+
+" Buffer-related bindings
+let g:which_key_map.b = {
+      \ 'name' : '+buffer',
+      \ 'n' : [':bnext', 'next buffer'],
+      \ 'p' : [':bprevious', 'previous buffer'],
+      \ 'd' : [':bd', 'delete buffer'],
+      \ 'l' : [':ls', 'list buffers'],
+      \ }
+
+" Tab-related bindings (tab management)
+let g:which_key_map.t = {
+      \ 'name' : '+tab',
+      \ 'n' : [':tabnew', 'new tab'],
+      \ 'c' : [':tabclose', 'close tab'],
+      \ 'o' : [':tabonly', 'close others'],
+      \ 'l' : [':tabnext', 'next tab'],
+      \ 'h' : [':tabprevious', 'previous tab'],
+      \ 'm' : [':tabmove', 'move tab'],
+      \ }
+
+" Git-related (vim-fugitive)
+let g:which_key_map.g = {
+      \ 'name' : '+git',
+      \ 's' : [':Git', 'status'],
+      \ 'd' : [':Gdiffsplit', 'diff'],
+      \ 'b' : [':Git blame', 'blame'],
+      \ 'c' : [':Git commit', 'commit'],
+      \ 'p' : [':Git push', 'push'],
+      \ }
+
+
+" Linting / quickfix (syntastic)
+let g:which_key_map.l = {
+      \ 'name' : '+lint',
+      \ 'n' : [':lnext', 'next lint error'],
+      \ 'p' : [':lprev', 'previous lint error'],
+      \ 'o' : [':lopen', 'open lint list'],
+      \ 'c' : [':lclose', 'close lint list'],
+      \ }
+
+" Folding
+let g:which_key_map.z = {
+      \ 'name' : '+fold',
+      \ 'o' : ['zo', 'open fold'],
+      \ 'c' : ['zc', 'close fold'],
+      \ 'O' : ['zO', 'open all folds'],
+      \ 'C' : ['zC', 'close all folds'],
+      \ 'a' : ['za', 'toggle fold'],
+      \ 'A' : ['zA', 'toggle all folds'],
+      \ 'm' : ['zm', 'fold more'],
+      \ 'r' : ['zr', 'reduce fold'],
+      \ }
+
+" Marks (with vim-markology)
+let g:which_key_map.m = {
+      \ 'name' : '+marks',
+      \ 'l' : [':marks', 'list marks'],
+      \ 'n' : ['`', 'jump to mark (followed by letter)'],
+      \ 'd' : [":delmarks!<CR>", 'delete all marks'],
+      \ }
+
+call which_key#register('<Space>', "g:which_key_map")
