@@ -21,6 +21,9 @@
   "icon_theme": "Catppuccin Frappé",
   "buffer_font_size": 15,
   "vim_mode": true,
+  "vim" : {
+    "use_system_clipboard": "on_yank"
+  },
   // Active pane styling settings.
   "active_pane_modifiers": {
     // Inset border size of the active pane, in pixels.
