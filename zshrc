@@ -154,6 +154,8 @@ bindkey   '^W' backward-kill-space-word
 bindkey '^[^H' backward-kill-bash-word
 # End of it
 
+unsetopt BEEP
+
 # eval $(thefuck --alias)
 eval "$(atuin init zsh)"
 export PATH="/Users/farid/.local/bin:$PATH"
