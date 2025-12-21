@@ -22,7 +22,7 @@
   "icon_theme": "Catppuccin Frappé",
   "buffer_font_size": 15,
   "vim_mode": true,
-  "vim" : {
+  "vim": {
     "use_system_clipboard": "on_yank"
   },
   // Active pane styling settings.
@@ -31,6 +31,11 @@
     "border_size": 0.0,
     // Opacity of the inactive panes. 0 means transparent, 1 means opaque.
     "inactive_opacity": 0.8
+  },
+  "languages": {
+    "YAML": {
+      "language_servers": ["yaml-language-server", "!docker-compose"]
+    }
   },
   "title_bar": {
     "show": false
