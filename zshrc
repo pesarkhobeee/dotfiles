@@ -77,15 +77,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  brew
-  git
-  dotenv
-  macos
-  gcloud
-  z
-  terraform zsh-autosuggestions zsh-syntax-highlighting helm golang
-)
+plugins=( brew git dotenv macos gcloud z terraform helm golang)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -114,7 +106,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -127,7 +118,7 @@ alias ai="git diff main | mods -a ollama -m llama3.2 -f 'write a pull request su
 alias kubectl="kubecolor"
 alias ccat=bat
 
-export PATH=$PATH:/Users/farid/bin
+export PATH=$PATH:/Users/farid.ahmadian@goflink.com/bin
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Make `Ctrl + W` and `Ctrl + Alt + H` in zsh behave the same as in bash
@@ -158,22 +149,28 @@ unsetopt BEEP
 
 # eval $(thefuck --alias)
 eval "$(atuin init zsh)"
-export PATH="/Users/farid/.local/bin:$PATH"
-export PATH="/Users/farid/.config/my-bash-scripts:$PATH"
+export PATH="/Users/farid.ahmadian@goflink.com/.local/bin:$PATH"
+export PATH="/Users/farid.ahmadian@goflink.com/.config/my-bash-scripts:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
-export PATH="/opt/homebrew/opt/ruby/bin:/Users/farid/.gem/bin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:/Users/farid.ahmadian@goflink.com/.gem/bin:$PATH"
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 export GEM_HOME="$HOME/.gem"
 export GOPRIVATE=github.com/goflink/*
 export GONOSUMDB=github.com/goflink/*
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
 
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
-eval "$(task --completion zsh)"
+eval "$(task --completion zsh 2>/dev/null)"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules,target --preview 'bat -n --color=always {}'"
 
-source /Users/farid/.config/my-bash-scripts/wezterm.sh
+source /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/wezterm.sh
+source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/opt/homebrew/share/zsh-syntax-highlighting/highlighters
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
