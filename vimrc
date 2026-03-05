@@ -1,301 +1,177 @@
-"Turn on syntax highlighting.
+" =============================================================================
+" 1. CORE VIM SETTINGS
+" =============================================================================
 syntax on
-
-set tabstop=4       " number of visual spaces per TAB
-set softtabstop=4   " number of spaces in tab when editing
-set expandtab       " tabs are spaces
-
-set number          " show line numbers
-set showcmd         " show command in bottom bar
-set showmode        " show VIM mode
-set cursorline      " highlight current line
-
-set showmatch       " highlight matching [{()}]
-set incsearch       " search as characters are entered
-set hlsearch        " highlight matches
-" turn off search highlight by help of prressing
-nnoremap <space> :nohlsearch<CR>
-
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
-set foldmethod=indent   " fold based on indent level
-" space open/closes folds
-nnoremap <leader>z za
-
-" move vertically by visual line
-nnoremap j gj
-nnoremap k gk
-
-set wildmenu        " visual autocomplete for command menu
-filetype indent on      " load filetype-specific indent files
-
-" Encoding
+filetype plugin indent on
 set encoding=utf-8
-
-" Speed up scrolling in Vim
+set mouse=a
 set ttyfast
-
-" Status bar
 set laststatus=2
+set belloff=all
+set backspace=indent,eol,start
 
-" Display different types of white spaces.
+" --- Tabs & Indentation ---
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set scrolloff=4
+
+" --- UI & Search ---
+set number
+set cursorline
+set showcmd
+set showmode
+set showmatch
+set incsearch
+set hlsearch
+set wildmenu
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
 
-set mouse=a " Enable mouse usage (all modes)
+" --- Folding ---
+set foldenable
+set foldlevelstart=10
+set foldmethod=indent
 
-" set colorcolumn=120
-
-set backspace=indent,eol,start " To allow backspacing over everything in insert mode 
-
-filetype plugin on      " load filetype-specific indent files
-" Resources:
-" * https://dougblack.io/words/a-good-vimrc.html
-" * https://www.linode.com/docs/tools-reference/tools/introduction-to-vim-customization/
-
-set belloff=all
-" ================ jump to the last position when reopening a file ==================
-if has("autocmd")
-          au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-endif
-
-" ================ Persistent Undo ==================
+" --- Persistent Undo ---
 if has('persistent_undo')
-    " define a path to store persistent undo files.
     let target_path = expand('~/.config/vim-persisted-undo/')
-    " create the directory and any parent directories
-    " if the location does not exist.
-    if !isdirectory(target_path)
-        call system('mkdir -p ' . target_path)
-    endif
-    " point Vim to the defined undo directory.
+    if !isdirectory(target_path) | call system('mkdir -p ' . target_path) | endif
     let &undodir = target_path
-    " finally, enable undo persistence.
     set undofile
 endif
 
-" ================ Scrolling ========================
+" --- Auto-Commands ---
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+" Note: vim-sleuth auto-detects indentation per file, so explicit
+" filetype rules for Python/Go are not needed.
 
-set scrolloff=4         "Start scrolling when we're 8 lines away from margins
-set sidescrolloff=15
-set sidescroll=1
-
-" ================ Plugins ======================
-
+" =============================================================================
+" 2. PLUGIN MANAGEMENT
+" =============================================================================
 call plug#begin()
 
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --go-completer --rust-completer' }
-" Plug 'morhetz/gruvbox'
-Plug 'sainnhe/everforest'
-Plug 'kamykn/spelunker.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
-Plug 'tpope/vim-fugitive'
-Plug 'preservim/nerdtree'
-Plug 'vim-syntastic/syntastic'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'rust-lang/rust.vim'
-Plug 'hashivim/vim-terraform'
-Plug 'jeetsukumaran/vim-markology'
-" TODO: Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'tpope/vim-sleuth'
- 
-" TODO : Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" If you don't have nodejs and yarn
-" use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
-" see: https://github.com/iamcco/markdown-preview.nvim/issues/50
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
- 
+" Intelligence & AI
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'github/copilot.vim'
+
+" Navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-
-Plug 'github/copilot.vim'
+Plug 'preservim/nerdtree'
 Plug 'liuchengxu/vim-which-key'
 
-" Initialize plugin system
+" UI
+Plug 'sainnhe/everforest'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'jeetsukumaran/vim-markology'
+
+" Tools
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sleuth'
+" Syntastic removed — CoC provides diagnostics via language servers
+Plug 'kamykn/spelunker.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown']}
+
 call plug#end()
 
-" morhetz/gruvbox
-" let g:gruvbox_guisp_fallback = "bg"
-" silent! colorscheme gruvbox
-" Important!!
-if has('termguicolors')
-  set termguicolors
-endif
-" For dark version.
+" =============================================================================
+" 3. PLUGIN CONFIG
+" =============================================================================
+if has('termguicolors') | set termguicolors | endif
 set background=dark
-" Set contrast.
-" This configuration option should be placed before `colorscheme everforest`.
-" Available values: 'hard', 'medium'(default), 'soft'
 let g:everforest_background = 'soft'
-" For better performance
-let g:everforest_better_performance = 1
-let g:everforest_spell_foreground = 'colored'
-let g:airline_theme = 'everforest'
 colorscheme everforest
+let g:airline_theme = 'everforest'
 
-" vim-airline/vim-airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+" --- CoC Completion Settings ---
+set shortmess+=c
+set updatetime=300
 
-" ycm-core/YouCompleteMe
-" let g:ycm_python_binary_path = 'python3'
-" map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" Tab: navigate completion menu or trigger completion; Shift-Tab: navigate back
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-" vim-syntastic/syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" Enter: confirm completion or normal newline
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" Ctrl+Space: manually trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
 
-let g:syntastic_yaml_checkers = ['yamllint']
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_ruby_checkers   = ['rubocop']
+" Trigger completion after typing '.' (for method/field access)
+inoremap <silent> . .<C-\><C-o>:silent call coc#refresh()<CR>
 
-let g:terraform_fold_sections=1
-let g:terraform_fmt_on_save=1
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-" preservim/nerdtree
-" autocmd VimEnter * NERDTree
-" Go to previous (last accessed) window.
-autocmd VimEnter * wincmd p
-" Open a NERDTree automatically when vim starts up if no files were specified
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" Close vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Jump to definition
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-" ctrlpvim/ctrlp.vim
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
-" you can find your desire language code from here :
-" https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-let g:vim_linguist_destination_language="fa"
-
-" add yaml stuffs
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-" Hidden easter egg ;)
-" Display relative and absolute line numbers simultaneously in Vim
-" https://www.vim.org/scripts/script.php?script_id=2351
-" call RltvNmbr#RltvNmbrCtrl(1)
-"
-au BufReadPost *.libsonnet set syntax=Yaml
-
-let g:minimap_width = 10
-" let g:minimap_auto_start = 1
-" let g:minimap_auto_start_win_enter = 1
-
-let g:indent_guides_enable_on_vim_startup = 1
-" ================ Customize mapping ======================
-
+" =============================================================================
+" 4. KEYBINDINGS & WHICH-KEY (The Full Map)
+" =============================================================================
 let mapleader = "\<Space>"
 
-" Toggle paste mode mode with <Leader>pp
-nnoremap <Leader>pp :set paste!<CR>
+" --- Manual Mappings ---
+" Clear search highlights
+nnoremap <leader><space> :nohlsearch<CR>
+" Reload vimrc
+nnoremap <leader>vc :source $MYVIMRC<CR>:echo "Config Reloaded!"<CR>
+" Toggle NERDTree
+nnoremap <leader>nt :NERDTreeToggle<CR>
+" Find current file in NERDTree
+nnoremap <leader>nf :NERDTreeFind<CR>
+" Auto-indent entire file
+nnoremap <leader>= m'gg=G`'
+" Append semicolon at end of line
+nnoremap <leader>; m'A;<ESC>`'
 
-" Indent whole file while preserving cursor location with <Leader>=
-nnoremap <Leader>= m'gg=G`'
+" Copilot Insert Mode
+imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
+imap <C-l> <Plug>(copilot-accept-word)
+imap <C-f> <Plug>(copilot-next)
+imap <C-b> <Plug>(copilot-previous)
 
-" Add a semicolon to the current line without moving the cursor with <Leader>;
-nnoremap <Leader>; m'A;<ESC>`'
+" Use Ctrl+p+p to find files (FZF)
+nnoremap <C-p><C-p> :Files<CR>
+" Use Ctrl+p to toggle NERDTree (Quick file explorer)
+nnoremap <C-p> :NERDTreeToggle<CR>
+" Use Ctrl+s to search for text inside files (Interactive Ripgrep)
+" Note: requires 'stty -ixon' in your shell rc to prevent terminal flow control from intercepting Ctrl+S
+nnoremap <C-s> :Rg<CR>
+" Use Ctrl+b to list open buffers (quick switching)
+nnoremap <C-b> :Buffers<CR>
+" Use Ctrl+e to edit vimrc quickly
+nnoremap <C-e> :edit $MYVIMRC<CR>
+" Use Ctrl+q to close current buffer (quick cleanup)
+nnoremap <C-q> :bd<CR>
+" Use Ctrl+g to run lazygit (overrides Vim's file-info command)
+nnoremap <C-g> :!lazygit<CR>
 
-" Source vimrc with <Leader>vc
-nnoremap <Leader>vc :source ~/.vim/vimrc<CR>:echo "Reloaded .vimrc"<CR>
-
-" Clear trailing whitespace with <Leader>cw
-nnoremap <Leader>cw :%s/\s\+$//g<CR>:nohlsearch<CR>
-
-" Nerdtree mappings. nt = toggle, nf = find.
-nnoremap <Leader>nt :NERDTreeToggle<CR>
-nnoremap <Leader>nf :NERDTreeFind<CR>
-
-" Select All and Copy to system's clipboard (requires vim-gtk package on Ubuntu-Gnome)
-nnoremap <leader>sa <esc>mzgg0vG$"+y'z<CR>
-
-" Python runner
-map <F5> :terminal python3 %<cr>
-map <leader><F5> :q<cr>
-
-" turn all tabs to spaces
-map <leader>tt :retab
-
-
-" lets learn vim better :P 
-"
-" disable arrow keys to force usage of hjkl
-" inoremap  <Up>     <NOP>
-" inoremap  <Down>   <NOP>
-" inoremap  <Left>   <NOP>
-" inoremap  <Right>  <NOP>
-" noremap   <Up>     <NOP>
-" noremap   <Down>   <NOP>
-" noremap   <Left>   <NOP>
-" noremap   <Right>  <NOP>
-
-" Show a popup widnow related to the latest git commit that changed the desired line
-map <silent><Leader>g :call setbufvar(winbufnr(popup_atcursor(systemlist("cd " . shellescape(fnamemodify(resolve(expand('%:p')), ":h")) . " && git log --no-merges -n 1 -L " . shellescape(line("v") . "," . line(".") . ":" . resolve(expand("%:p")))), { "padding": [1,1,1,1], "pos": "botleft", "wrap": 0 })), "&filetype", "git")<CR>
-
-" Automatically use the system clipboard for copy and paste.
-" set clipboard=unnamedplus
-
-" set spelllang=en
-" set spell
-set nospell
-
-" vim-which-key
+" --- Which-Key Setup ---
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 let g:which_key_map = {}
 
-" File-related bindings
+" f: Files
 let g:which_key_map.f = {
       \ 'name' : '+file',
       \ 'f' : [':Files', 'find files'],
       \ 'r' : [':Rg', 'ripgrep text'],
-      \ 'e' : [':edit ~/.vimrc', 'edit vimrc'],
+      \ 'e' : [':edit $MYVIMRC', 'edit vimrc'],
       \ }
 
-" Buffer-related bindings
-let g:which_key_map.b = {
-      \ 'name' : '+buffer',
-      \ 'n' : [':bnext', 'next buffer'],
-      \ 'p' : [':bprevious', 'previous buffer'],
-      \ 'd' : [':bd', 'delete buffer'],
-      \ }
-
-" Window/split bindings
-let g:which_key_map['w'] = {
-      \ 'name' : '+windows' ,
-      \ 'w' : ['<C-W>w'     , 'other-window']          ,
-      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-      \ 'h' : ['<C-W>h'     , 'window-left']           ,
-      \ 'j' : ['<C-W>j'     , 'window-below']          ,
-      \ 'l' : ['<C-W>l'     , 'window-right']          ,
-      \ 'k' : ['<C-W>k'     , 'window-up']             ,
-      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-      \ 'J' : [':resize +5'  , 'expand-window-below']   ,
-      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-      \ 'K' : [':resize -5'  , 'expand-window-up']      ,
-      \ '=' : ['<C-W>='     , 'balance-window']        ,
-      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
-      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-      \ '?' : ['Windows'    , 'fzf-window']            ,
-      \ }
-
-" Buffer-related bindings
+" b: Buffers
 let g:which_key_map.b = {
       \ 'name' : '+buffer',
       \ 'n' : [':bnext', 'next buffer'],
@@ -304,18 +180,30 @@ let g:which_key_map.b = {
       \ 'l' : [':ls', 'list buffers'],
       \ }
 
-" Tab-related bindings (tab management)
+" w: Windows
+let g:which_key_map.w = {
+      \ 'name' : '+windows',
+      \ 'w' : ['<C-W>w', 'other-window'],
+      \ 'd' : ['<C-W>c', 'delete-window'],
+      \ '-' : ['<C-W>s', 'split-below'],
+      \ '|' : ['<C-W>v', 'split-right'],
+      \ 'h' : ['<C-W>h', 'window-left'],
+      \ 'j' : ['<C-W>j', 'window-below'],
+      \ 'k' : ['<C-W>k', 'window-up'],
+      \ 'l' : ['<C-W>l', 'window-right'],
+      \ '=' : ['<C-W>=', 'balance-window'],
+      \ }
+
+" t: Tabs
 let g:which_key_map.t = {
       \ 'name' : '+tab',
       \ 'n' : [':tabnew', 'new tab'],
       \ 'c' : [':tabclose', 'close tab'],
-      \ 'o' : [':tabonly', 'close others'],
       \ 'l' : [':tabnext', 'next tab'],
       \ 'h' : [':tabprevious', 'previous tab'],
-      \ 'm' : [':tabmove', 'move tab'],
       \ }
 
-" Git-related (vim-fugitive)
+" g: Git
 let g:which_key_map.g = {
       \ 'name' : '+git',
       \ 's' : [':Git', 'status'],
@@ -325,35 +213,29 @@ let g:which_key_map.g = {
       \ 'p' : [':Git push', 'push'],
       \ }
 
-
-" Linting / quickfix (syntastic)
-let g:which_key_map.l = {
-      \ 'name' : '+lint',
-      \ 'n' : [':lnext', 'next lint error'],
-      \ 'p' : [':lprev', 'previous lint error'],
-      \ 'o' : [':lopen', 'open lint list'],
-      \ 'c' : [':lclose', 'close lint list'],
+" a: AI (Copilot)
+let g:which_key_map.a = {
+      \ 'name' : '+ai-copilot',
+      \ 's' : [':Copilot status', 'status'],
+      \ 'p' : [':Copilot panel', 'open panel'],
+      \ 'd' : [':Copilot disable', 'disable'],
+      \ 'e' : [':Copilot enable', 'enable'],
       \ }
 
-" Folding
-let g:which_key_map.z = {
-      \ 'name' : '+fold',
-      \ 'o' : ['zo', 'open fold'],
-      \ 'c' : ['zc', 'close fold'],
-      \ 'O' : ['zO', 'open all folds'],
-      \ 'C' : ['zC', 'close all folds'],
-      \ 'a' : ['za', 'toggle fold'],
-      \ 'A' : ['zA', 'toggle all folds'],
-      \ 'm' : ['zm', 'fold more'],
-      \ 'r' : ['zr', 'reduce fold'],
-      \ }
-
-" Marks (with vim-markology)
+" m: Marks
 let g:which_key_map.m = {
       \ 'name' : '+marks',
       \ 'l' : [':marks', 'list marks'],
-      \ 'n' : ['`', 'jump to mark (followed by letter)'],
       \ 'd' : [":delmarks!<CR>", 'delete all marks'],
+      \ }
+
+" c: Code Actions (Coc)
+let g:which_key_map.c = {
+      \ 'name' : '+lsp-diagnostics',
+      \ 'n' : ['<Plug>(coc-diagnostic-next)', 'next error'],
+      \ 'p' : ['<Plug>(coc-diagnostic-prev)', 'prev error'],
+      \ 'i' : [':CocInfo', 'lsp info'],
+      \ 'f' : ['<Plug>(coc-fix-current)', 'quick-fix'],
       \ }
 
 call which_key#register('<Space>', "g:which_key_map")
