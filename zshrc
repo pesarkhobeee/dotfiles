@@ -117,6 +117,7 @@ alias replace="ambr -r $1 $2"
 alias ai="git diff main | mods -a ollama -m llama3.2 -f 'write a pull request summary and title for this git diff.'"
 alias kubectl="kubecolor"
 alias ccat=bat
+alias checkStorage=dust
 
 export PATH=$PATH:/Users/farid.ahmadian@goflink.com/bin
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True

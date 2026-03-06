@@ -1,0 +1,35 @@
+{
+  "suggest.autoTrigger": "always",
+  "suggest.triggerCompletionWait": 0,
+  "suggest.noselect": false,
+
+  // --- Go ---
+  "go.goplsOptions": {
+    "completeUnimported": true,
+    "usePlaceholders": true,
+    "staticcheck": true
+  },
+
+  // --- Python (Pyright) ---
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+
+  // --- JavaScript / TypeScript ---
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+
+  // --- YAML ---
+  "yaml.schemas": {
+    "kubernetes": ["k8s-*.yaml", "k8s-*.yml", "**/k8s/**/*.yaml", "**/k8s/**/*.yml", "**/kubernetes/**/*.yaml"],
+    "https://json.schemastore.org/github-workflow.json": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
+    "https://json.schemastore.org/github-action.json": ["action.yml", "action.yaml"],
+    "https://json.schemastore.org/docker-compose.json": ["docker-compose*.yml", "docker-compose*.yaml"]
+  },
+  "yaml.format.enable": true,
+
+  // --- Diagnostics ---
+  "diagnostic.errorSign": ">>",
+  "diagnostic.warningSign": "!!",
+  "diagnostic.infoSign": "??",
+  "diagnostic.hintSign": ".."
+}
