@@ -34,6 +34,9 @@ set foldenable
 set foldlevelstart=10
 set foldmethod=indent
 
+" --- Viminfo (remember recent files for auto-open) ---
+set viminfo='200,<50,s10,h
+
 " --- Persistent Undo ---
 if has('persistent_undo')
     let target_path = expand('~/.config/vim-persisted-undo/')
@@ -44,6 +47,26 @@ endif
 
 " --- Auto-Commands ---
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+" Open the most recently opened file in cwd when vim starts with no arguments
+function! OpenLastFileInCwd()
+  if argc() > 0 || exists("s:std_in")
+    return
+  endif
+  let l:cwd = resolve(expand(getcwd())) . '/'
+  for f in v:oldfiles
+    " Skip NERDTree buffers
+    if f =~# 'NERD_tree' | continue | endif
+    " Expand ~ and resolve symlinks
+    let l:fullpath = resolve(expand(f))
+    if stridx(l:fullpath, l:cwd) == 0 && filereadable(l:fullpath)
+      execute 'edit' fnameescape(l:fullpath)
+      return
+    endif
+  endfor
+endfunction
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * nested call OpenLastFileInCwd()
 " Note: vim-sleuth auto-detects indentation per file, so explicit
 " filetype rules for Python/Go are not needed.
 
@@ -128,8 +151,17 @@ let mapleader = "\<Space>"
 nnoremap <leader><space> :nohlsearch<CR>
 " Reload vimrc
 nnoremap <leader>vc :source $MYVIMRC<CR>:echo "Config Reloaded!"<CR>
-" Toggle NERDTree
-nnoremap <leader>nt :NERDTreeToggle<CR>
+" Smart NERDTree toggle: close if open, otherwise open & highlight current file
+function! NERDTreeSmartToggle()
+  if exists("g:NERDTree") && g:NERDTree.IsOpen()
+    NERDTreeClose
+  elseif expand('%') ==# '' || !filereadable(expand('%'))
+    NERDTreeToggle
+  else
+    NERDTreeFind
+  endif
+endfunction
+nnoremap <leader>nt :call NERDTreeSmartToggle()<CR>
 " Find current file in NERDTree
 nnoremap <leader>nf :NERDTreeFind<CR>
 " Auto-indent entire file
@@ -143,10 +175,10 @@ imap <C-l> <Plug>(copilot-accept-word)
 imap <C-f> <Plug>(copilot-next)
 imap <C-b> <Plug>(copilot-previous)
 
-" Use Ctrl+p+p to find files (FZF)
-nnoremap <C-p><C-p> :Files<CR>
-" Use Ctrl+p to toggle NERDTree (Quick file explorer)
-nnoremap <C-p> :NERDTreeToggle<CR>
+" Use Ctrl+n to toggle NERDTree (N = NERDTree)
+nnoremap <C-n> :call NERDTreeSmartToggle()<CR>
+" Use Ctrl+p to find files (FZF)
+nnoremap <C-p> :Files<CR>
 " Use Ctrl+s to search for text inside files (Interactive Ripgrep)
 " Note: requires 'stty -ixon' in your shell rc to prevent terminal flow control from intercepting Ctrl+S
 nnoremap <C-s> :Rg<CR>
