@@ -74,6 +74,8 @@ function! OpenLastFileInCwd()
 endfunction
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * nested call OpenLastFileInCwd()
+" Clear jumplist on startup so Ctrl+o/Ctrl+i only show current-session jumps
+autocmd VimEnter * clearjumps
 " Note: vim-sleuth auto-detects indentation per file, so explicit
 " filetype rules for Python/Go are not needed.
 
@@ -129,9 +131,19 @@ let NERDTreeShowHidden=1
 " --- Highlighted Yank ---
 let g:highlightedyank_highlight_duration = 200
 
+" --- CoC Extensions (auto-installed on startup) ---
+let g:coc_global_extensions = [
+      \ 'coc-go',
+      \ 'coc-pyright',
+      \ 'coc-tsserver',
+      \ 'coc-yaml',
+      \ 'coc-json',
+      \ ]
+
 " --- CoC Completion Settings ---
 set shortmess+=c
 set updatetime=300
+set signcolumn=yes
 
 " Tab: navigate completion menu or trigger completion; Shift-Tab: navigate back
 inoremap <silent><expr> <TAB>
@@ -145,9 +157,6 @@ inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
 " Ctrl+Space: manually trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" Trigger completion after typing '.' (for method/field access)
-inoremap <silent> . .<C-\><C-o>:silent call coc#refresh()<CR>
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -172,6 +181,12 @@ endfunction
 
 " Rename symbol
 nmap <silent> <leader>rn <Plug>(coc-rename)
+" Code action on current line
+nmap <silent> <leader>ca <Plug>(coc-codeaction-cursor)
+" Show all diagnostics
+nnoremap <silent> <leader>cd :CocDiagnostics<CR>
+" Organize imports
+nmap <silent> <leader>co :call CocActionAsync('organizeImport')<CR>
 
 " =============================================================================
 " 4. KEYBINDINGS & WHICH-KEY (The Full Map)
@@ -301,9 +316,12 @@ let g:which_key_map.r = {
 
 " c: Code Actions (Coc)
 let g:which_key_map.c = {
-      \ 'name' : '+lsp-diagnostics',
+      \ 'name' : '+lsp-code',
       \ 'n' : ['<Plug>(coc-diagnostic-next)', 'next error'],
       \ 'p' : ['<Plug>(coc-diagnostic-prev)', 'prev error'],
+      \ 'a' : ['<Plug>(coc-codeaction-cursor)', 'code action'],
+      \ 'd' : [':CocDiagnostics', 'diagnostics list'],
+      \ 'o' : [":call CocActionAsync('organizeImport')", 'organize imports'],
       \ 'i' : [':CocInfo', 'lsp info'],
       \ 'f' : ['<Plug>(coc-fix-current)', 'quick-fix'],
       \ }
