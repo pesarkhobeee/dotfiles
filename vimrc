@@ -25,9 +25,16 @@ set showmode
 set showmatch
 set incsearch
 set hlsearch
+set ignorecase
+set smartcase
 set wildmenu
 set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:·
+
+" --- Splits ---
+set splitbelow
+set splitright
+set hidden
 
 " --- Folding ---
 set foldenable
@@ -79,11 +86,13 @@ call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'github/copilot.vim'
 
-" Navigation
+" Navigation & Editing
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'liuchengxu/vim-which-key'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 
 " UI
 Plug 'sainnhe/everforest'
@@ -91,9 +100,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jeetsukumaran/vim-markology'
+Plug 'machakann/vim-highlightedyank'
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Tools
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 " Syntastic removed — CoC provides diagnostics via language servers
 Plug 'kamykn/spelunker.vim'
@@ -109,6 +122,12 @@ set background=dark
 let g:everforest_background = 'soft'
 colorscheme everforest
 let g:airline_theme = 'everforest'
+
+" --- NERDTree ---
+let NERDTreeShowHidden=1
+
+" --- Highlighted Yank ---
+let g:highlightedyank_highlight_duration = 200
 
 " --- CoC Completion Settings ---
 set shortmess+=c
@@ -140,6 +159,19 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Hover documentation with K
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Rename symbol
+nmap <silent> <leader>rn <Plug>(coc-rename)
 
 " =============================================================================
 " 4. KEYBINDINGS & WHICH-KEY (The Full Map)
@@ -259,6 +291,12 @@ let g:which_key_map.m = {
       \ 'name' : '+marks',
       \ 'l' : [':marks', 'list marks'],
       \ 'd' : [":delmarks!<CR>", 'delete all marks'],
+      \ }
+
+" r: Refactor
+let g:which_key_map.r = {
+      \ 'name' : '+refactor',
+      \ 'n' : ['<Plug>(coc-rename)', 'rename symbol'],
       \ }
 
 " c: Code Actions (Coc)
