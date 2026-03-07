@@ -125,6 +125,16 @@ let g:everforest_background = 'soft'
 colorscheme everforest
 let g:airline_theme = 'everforest'
 
+" --- Diagnostic virtual text colors (override colorscheme) ---
+highlight CocErrorVirtualText guifg=#ff5555 ctermfg=Red
+highlight CocWarningVirtualText guifg=#f1fa8c ctermfg=Yellow
+highlight CocInfoVirtualText guifg=#8be9fd ctermfg=Cyan
+highlight CocHintVirtualText guifg=#6272a4 ctermfg=Grey
+
+" --- Completion menu colors (fix readability on selected item) ---
+highlight PmenuSel guibg=#45475a guifg=#d3c6aa ctermbg=DarkGrey ctermfg=White
+highlight CocMenuSel guibg=#45475a guifg=#d3c6aa ctermbg=DarkGrey ctermfg=White
+
 " --- NERDTree ---
 let NERDTreeShowHidden=1
 
