@@ -38,8 +38,9 @@ set hidden
 
 " --- Folding ---
 set foldenable
-set foldlevelstart=10
+set foldlevelstart=99
 set foldmethod=indent
+set foldnestmax=3
 
 " --- Viminfo (remember recent files for auto-open) ---
 set viminfo='200,<50,s10,h
@@ -325,6 +326,28 @@ let g:which_key_map.r = {
       \ }
 
 " c: Code Actions (Coc)
+" z: Folding
+let g:which_key_map.z = {
+      \ 'name' : '+fold',
+      \ 'a' : [':call ToggleFoldAll()', 'toggle all folds'],
+      \ 'o' : ['zo', 'open fold'],
+      \ 'c' : ['zc', 'close fold'],
+      \ 'O' : ['zR', 'open all folds'],
+      \ 'C' : ['zM', 'close all folds'],
+      \ }
+
+" Toggle between all folds open and all folds closed
+let g:folds_open = 1
+function! ToggleFoldAll()
+  if g:folds_open
+    normal! zM
+    let g:folds_open = 0
+  else
+    normal! zR
+    let g:folds_open = 1
+  endif
+endfunction
+
 let g:which_key_map.c = {
       \ 'name' : '+lsp-code',
       \ 'n' : ['<Plug>(coc-diagnostic-next)', 'next error'],
