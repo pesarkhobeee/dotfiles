@@ -1,3 +1,5 @@
+let mapleader = "\<Space>"
+
 " =============================================================================
 " 1. CORE VIM SETTINGS
 " =============================================================================
@@ -39,11 +41,15 @@ set hidden
 " --- Folding ---
 set foldenable
 set foldlevelstart=99
-set foldmethod=indent
+set foldmethod=syntax
 set foldnestmax=3
 
 " --- Viminfo (remember recent files for auto-open) ---
 set viminfo='200,<50,s10,h
+
+" --- Swap Files (keep them out of working directories) ---
+set directory=~/.vim/swap//
+if !isdirectory(expand('~/.vim/swap')) | call system('mkdir -p ' . expand('~/.vim/swap')) | endif
 
 " --- Persistent Undo ---
 if has('persistent_undo')
@@ -54,9 +60,6 @@ if has('persistent_undo')
 endif
 
 " --- Auto-Commands ---
-au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
-" Open the most recently opened file in cwd when vim starts with no arguments
 function! OpenLastFileInCwd()
   if argc() > 0 || exists("s:std_in")
     return
@@ -73,10 +76,18 @@ function! OpenLastFileInCwd()
     endif
   endfor
 endfunction
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * nested call OpenLastFileInCwd()
-" Clear jumplist on startup so Ctrl+o/Ctrl+i only show current-session jumps
-autocmd VimEnter * clearjumps
+
+augroup vimrc_autocmds
+  autocmd!
+  " Restore cursor position on file open
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * nested call OpenLastFileInCwd()
+  " Clear jumplist on startup so Ctrl+o/Ctrl+i only show current-session jumps
+  autocmd VimEnter * clearjumps
+  " Python uses indentation for blocks, so indent folding works better
+  autocmd FileType python setlocal foldmethod=indent
+augroup END
 " Note: vim-sleuth auto-detects indentation per file, so explicit
 " filetype rules for Python/Go are not needed.
 
@@ -125,6 +136,14 @@ set background=dark
 let g:everforest_background = 'soft'
 colorscheme everforest
 let g:airline_theme = 'everforest'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#hunks#enabled = 1
+let g:airline_section_y = ''
+let g:airline_section_x = '%{&filetype}'
 
 " --- Diagnostic virtual text colors (override colorscheme) ---
 highlight CocErrorVirtualText guifg=#ff5555 ctermfg=Red
@@ -135,6 +154,9 @@ highlight CocHintVirtualText guifg=#6272a4 ctermfg=Grey
 " --- Completion menu colors (fix readability on selected item) ---
 highlight PmenuSel guibg=#45475a guifg=#d3c6aa ctermbg=DarkGrey ctermfg=White
 highlight CocMenuSel guibg=#45475a guifg=#d3c6aa ctermbg=DarkGrey ctermfg=White
+
+" --- FZF (use rg to respect .gitignore and skip hidden/vendor dirs) ---
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!.git"'
 
 " --- NERDTree ---
 let NERDTreeShowHidden=1
@@ -156,9 +178,10 @@ set shortmess+=c
 set updatetime=300
 set signcolumn=yes
 
-" Tab: navigate completion menu or trigger completion; Shift-Tab: navigate back
-inoremap <silent><expr> <TAB>
+" Tab: CoC menu > Copilot suggestion > normal tab
+imap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
+      \ !empty(copilot#GetDisplayedSuggestion().text) ? copilot#Accept("\<CR>") :
       \ CheckBackspace() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
@@ -202,8 +225,6 @@ nmap <silent> <leader>co :call CocActionAsync('organizeImport')<CR>
 " =============================================================================
 " 4. KEYBINDINGS & WHICH-KEY (The Full Map)
 " =============================================================================
-let mapleader = "\<Space>"
-
 " --- Manual Mappings ---
 " Clear search highlights
 nnoremap <leader><space> :nohlsearch<CR>
@@ -230,8 +251,8 @@ nnoremap <leader>; m'A;<ESC>`'
 " Copilot Insert Mode
 imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
 imap <C-l> <Plug>(copilot-accept-word)
-imap <C-f> <Plug>(copilot-next)
-imap <C-b> <Plug>(copilot-previous)
+imap <C-]> <Plug>(copilot-next)
+imap <C-k> <Plug>(copilot-dismiss)
 
 " Use Ctrl+n to toggle NERDTree (N = NERDTree)
 nnoremap <C-n> :call NERDTreeSmartToggle()<CR>
@@ -244,8 +265,8 @@ nnoremap <C-s> :Rg<CR>
 nnoremap <C-b> :Buffers<CR>
 " Use Ctrl+e to edit vimrc quickly
 nnoremap <C-e> :edit $MYVIMRC<CR>
-" Use Ctrl+q to close current buffer (quick cleanup)
-nnoremap <C-q> :bd<CR>
+" Use Ctrl+q to close current buffer (keep window layout)
+nnoremap <C-q> :bp\|bd #<CR>
 " Use Ctrl+g to run lazygit (overrides Vim's file-info command)
 nnoremap <C-g> :!lazygit<CR>
 

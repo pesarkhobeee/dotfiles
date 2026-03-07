@@ -26,6 +26,7 @@
     "https://json.schemastore.org/docker-compose.json": ["docker-compose*.yml", "docker-compose*.yaml"]
   },
   "yaml.format.enable": true,
+  "yaml.schemaStore.enable": true,
 
   // --- Diagnostics ---
   "diagnostic.errorSign": ">>",
