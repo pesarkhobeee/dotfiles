@@ -5,8 +5,6 @@ if [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#todo" ]; then
   aerospace focus --window-id $WEZTERM_TAB_ID && wezterm cli activate-pane --pane-id=0
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#mute-toggle" ] ; then
   aerospace volume mute-toggle
-elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#rearrange" ] ; then
-  /Users/farid.ahmadian@goflink.com/.config/aerospace/rearrange.sh
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#github" ] ; then
   # gh repo list goflink --no-archived --limit 1000 > github-links.txt
   cat /Users/farid.ahmadian@goflink.com/github-links.txt | choose | awk '{print "https://github.com/"$1}' | xargs open

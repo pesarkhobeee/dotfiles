@@ -6,28 +6,27 @@
 SID="$1"
 CONFIG_DIR="$HOME/.config/sketchybar"
 
-# Source icon_map function once instead of spawning subprocesses per app
-source "$CONFIG_DIR/plugins/icon_map_fn.sh"
+# Determine focused workspace (passed via event or query aerospace)
+CURRENT_WORKSPACE="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused)}"
 
 # Update app icons for this workspace
 apps=$(aerospace list-windows --workspace "$SID" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
 
-icon_strip=""
 if [ -n "${apps}" ]; then
     icon_strip=" "
     while read -r app; do
-        icon_map "$app"
-        icon_strip+=" $icon_result"
+        icon_strip+=" $($CONFIG_DIR/plugins/icon_map_fn.sh "$app")"
     done <<<"${apps}"
-fi
-
-# Build a single batched sketchybar command
-args=(--set space.$SID label="$icon_strip")
-
-if [ -n "${apps}" ]; then
-    args+=(--set $NAME background.drawing=off drawing=on)
+    sketchybar --set space.$SID label="$icon_strip"
 else
-    args+=(--set $NAME background.drawing=off drawing=off)
+    sketchybar --set space.$SID label=""
 fi
 
-sketchybar "${args[@]}"
+# Update visibility and highlight
+if [ "$SID" = "$CURRENT_WORKSPACE" ]; then
+    sketchybar --set $NAME background.drawing=on drawing=on
+elif [ -n "${apps}" ]; then
+    sketchybar --set $NAME background.drawing=off drawing=on
+else
+    sketchybar --set $NAME background.drawing=off drawing=off
+fi

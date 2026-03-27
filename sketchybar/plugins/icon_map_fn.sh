@@ -716,8 +716,6 @@ function icon_map() {
 }
 ### END-OF-ICON-MAP
 
-# When executed directly (not sourced), run and print result
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  icon_map "$1"
-  echo "$icon_result"
-fi
+icon_map "$1"
+
+echo "$icon_result"
