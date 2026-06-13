@@ -10,8 +10,12 @@ elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#github" ] ; then
   cat /Users/farid.ahmadian@goflink.com/github-links.txt | choose | awk '{print "https://github.com/"$1}' | xargs open
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#meet" ] ; then
   wezterm cli spawn /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/my-google-meet.sh
+elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#rearrange" ] ; then
+  wezterm cli spawn /Users/farid.ahmadian@goflink.com/.config/aerospace/rearrange.sh
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#screenshots" ] ; then
   open -a Screenshot
+elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#history" ] ; then
+  /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/my-vivaldi-history.sh
 elif [ "$SELECTED_LINK" != "" ] ; then
   open "$SELECTED_LINK"
 fi
