@@ -118,6 +118,7 @@ alias ai="git diff main | mods -a ollama -m llama3.2 -f 'write a pull request su
 alias kubectl="kubecolor"
 alias ccat=bat
 alias checkStorage=dust
+alias datadog=datadog-cli
 
 export PATH=$PATH:/Users/farid.ahmadian@goflink.com/bin
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True

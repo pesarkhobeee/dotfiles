@@ -4,6 +4,7 @@ return {
   font_size = 18.0,
   initial_cols = 100,
   initial_rows = 30,
+  max_fps = 240,
   color_scheme = "Mirage",
   tab_bar_at_bottom = true,
   window_decorations = "RESIZE",
@@ -11,6 +12,8 @@ return {
   adjust_window_size_when_changing_font_size = false,
   custom_block_glyphs = true,
   window_background_opacity = 0.9,
+  bidi_enabled = true,
+  bidi_direction = 'AutoLeftToRight',
   keys = {
     -- This will create a new split and run your default program inside it
     { key="Enter", mods="CTRL|SHIFT",
