@@ -44,7 +44,7 @@ set foldlevelstart=99
 set foldmethod=syntax
 set foldnestmax=3
 
-" --- Viminfo (remember recent files for auto-open) ---
+" --- Viminfo ---
 set viminfo='200,<50,s10,h
 
 " --- Swap Files (keep them out of working directories) ---
@@ -60,29 +60,10 @@ if has('persistent_undo')
 endif
 
 " --- Auto-Commands ---
-function! OpenLastFileInCwd()
-  if argc() > 0 || exists("s:std_in")
-    return
-  endif
-  let l:cwd = resolve(expand(getcwd())) . '/'
-  for f in v:oldfiles
-    " Skip NERDTree buffers
-    if f =~# 'NERD_tree' | continue | endif
-    " Expand ~ and resolve symlinks
-    let l:fullpath = resolve(expand(f))
-    if stridx(l:fullpath, l:cwd) == 0 && filereadable(l:fullpath)
-      execute 'edit' fnameescape(l:fullpath)
-      return
-    endif
-  endfor
-endfunction
-
 augroup vimrc_autocmds
   autocmd!
   " Restore cursor position on file open
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * nested call OpenLastFileInCwd()
   " Clear jumplist on startup so Ctrl+o/Ctrl+i only show current-session jumps
   autocmd VimEnter * clearjumps
   " Python uses indentation for blocks, so indent folding works better
@@ -122,6 +103,7 @@ Plug 'airblade/vim-gitgutter'
 
 " Tools
 Plug 'tpope/vim-sleuth'
+Plug 'towolf/vim-helm'
 " Syntastic removed — CoC provides diagnostics via language servers
 Plug 'kamykn/spelunker.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown']}
