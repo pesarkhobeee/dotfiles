@@ -31,5 +31,23 @@ return {
       action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
       mods = 'NONE',
     },
+    {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'CMD',
+      action = wezterm.action.OpenLinkAtMouseCursor,
+    },
+    {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'CMD',
+      mouse_reporting = true,
+      action = wezterm.action.OpenLinkAtMouseCursor,
+    },
+    -- Without this, the app still receives the Down half of the click
+    {
+      event = { Down = { streak = 1, button = 'Left' } },
+      mods = 'CMD',
+      mouse_reporting = true,
+      action = wezterm.action.Nop,
+    },
   }
 }
