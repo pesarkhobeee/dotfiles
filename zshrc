@@ -176,3 +176,4 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/opt/homebrew/share/zsh-syntax-highlighting/highlighters
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
