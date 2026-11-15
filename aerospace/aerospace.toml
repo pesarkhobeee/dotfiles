@@ -89,6 +89,8 @@ outer.right =      10
 # You can uncomment this line to open up terminal with alt + enter shortcut
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 alt-enter = 'exec-and-forget /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/luncher.sh'
+alt-b = 'exec-and-forget /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/my-browser-history.sh'
+alt-shift-b = 'exec-and-forget /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/my-browser-history.sh recent'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-slash = 'layout tiles horizontal vertical'

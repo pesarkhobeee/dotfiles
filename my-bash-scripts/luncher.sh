@@ -15,7 +15,7 @@ elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#rearrange" ] ; then
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#screenshots" ] ; then
   open -a Screenshot
 elif [ "$SELECTED_LINK" != "" ] && [ "$SELECTED_LINK" == "#history" ] ; then
-  /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/my-vivaldi-history.sh
+  /Users/farid.ahmadian@goflink.com/.config/my-bash-scripts/my-browser-history.sh
 elif [ "$SELECTED_LINK" != "" ] ; then
   open "$SELECTED_LINK"
 fi
