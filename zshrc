@@ -148,6 +148,7 @@ bindkey '^[^H' backward-kill-bash-word
 # End of it
 
 unsetopt BEEP
+setopt HIST_IGNORE_SPACE
 
 # eval $(thefuck --alias)
 eval "$(atuin init zsh)"
